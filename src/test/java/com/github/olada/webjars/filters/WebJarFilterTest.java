@@ -1,4 +1,4 @@
-package net.olada.webjars.filters;
+package com.github.olada.webjars.filters;
 
 import io.undertow.servlet.spec.ServletOutputStreamImpl;
 import org.junit.Test;

@@ -30,7 +30,7 @@ supplying the configuration in the `web.xml` file. Here is an example:
 
     <filter>
         <filter-name>webjarFilter</filter-name>
-        <filter-class>net.olada.webjars.filters.WebJarFilter</filter-class>
+        <filter-class>WebJarFilter</filter-class>
         <init-param>
             <param-name>responseServeMethod</param-name>
             <param-value>REDIRECT</param-value>

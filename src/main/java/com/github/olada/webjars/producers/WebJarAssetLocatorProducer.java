@@ -1,4 +1,4 @@
-package net.olada.webjars.producers;
+package com.github.olada.webjars.producers;
 
 import org.webjars.WebJarAssetLocator;
 
