@@ -4,7 +4,7 @@
 
     <groupId>net.olada.webjars</groupId>
     <artifactId>webjars-webfilter-resolver</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>Webfilter which enables automatic version resolution for /webjars/-Requests</name>
     <url>https://github.com/olada/webjars-webfilter-resolver</url>
 
