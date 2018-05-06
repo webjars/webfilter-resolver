@@ -37,7 +37,7 @@ supplying the configuration in the `web.xml` file. Here is an example:
         </init-param>
     </filter>
 ```
-If an invalid parameter value is used, the response serve method will fall back to _ WRITE_BYTE_RESPONSE_ and
+If an invalid parameter value is used, the response serve method will fall back to _WRITE_BYTE_RESPONSE_ and
 a warning log entry will be written to the server log.
 
 ## Usage
