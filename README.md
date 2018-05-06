@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/olada/webjars-webfilter-resolver.svg?branch=master)](https://travis-ci.org/olada/webjars-webfilter-resolver)
+
 # webjars-webfilter-resolver
 Webfilter which enables automatic resolving of webjars without versions.
 
