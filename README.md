@@ -54,7 +54,7 @@ server (tested with Wildfly 12 in Java EE 7 mode):
 <dependency>
     <groupId>com.github.olada</groupId>
     <artifactId>webjars-webfilter-resolver</artifactId>
-    <version>0.0.6</version>
+    <version>0.1.0</version>
 </dependency>
 <dependency>
     <groupId>org.webjars</groupId>
