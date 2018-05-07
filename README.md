@@ -52,9 +52,9 @@ Following dependencies are required for the webfilter to work on a Wildfly
 server (tested with Wildfly 12 in Java EE 7 mode):
 ```
 <dependency>
-    <groupId>net.olada.webjars</groupId>
+    <groupId>com.github.olada</groupId>
     <artifactId>webjars-webfilter-resolver</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.6</version>
 </dependency>
 <dependency>
     <groupId>org.webjars</groupId>
