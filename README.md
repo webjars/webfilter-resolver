@@ -60,5 +60,6 @@ server (tested with Wildfly 12 in Java EE 7 mode):
 <dependency>
     <groupId>org.webjars</groupId>
     <artifactId>webjars-locator-jboss-vfs</artifactId>
+    <version>0.1.0</version><!-- The fact that the versions are equal is a coincidence :-) -->
 </dependency>
 ```
