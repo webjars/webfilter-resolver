@@ -1,11 +1,11 @@
 package org.webjars.filters;
 
 import io.undertow.servlet.spec.ServletOutputStreamImpl;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.webjars.MultipleMatchesException;
 import org.webjars.WebJarAssetLocator;
@@ -18,6 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by David
@@ -45,70 +51,70 @@ public class WebJarFilterTest {
 
     @Test
     public void init() {
-        Mockito.when(filterConfig.getInitParameter(WebJarFilter.WEB_INIT_PARAM_RESPONSE_SERVE_METHOD)).thenReturn("REDIRECT");
+        when(filterConfig.getInitParameter(WebJarFilter.WEB_INIT_PARAM_RESPONSE_SERVE_METHOD)).thenReturn("REDIRECT");
         webJarFilter.init(filterConfig);
-        MatcherAssert.assertThat(webJarFilter.responseServeMethod, Matchers.is(WebJarFilter.ResponseServeMethod.REDIRECT));
+        assertThat(webJarFilter.responseServeMethod, is(WebJarFilter.ResponseServeMethod.REDIRECT));
     }
 
     @Test
     public void init_withFallback() {
-        Mockito.when(filterConfig.getInitParameter(WebJarFilter.WEB_INIT_PARAM_RESPONSE_SERVE_METHOD)).thenReturn("invalid response method");
+        when(filterConfig.getInitParameter(WebJarFilter.WEB_INIT_PARAM_RESPONSE_SERVE_METHOD)).thenReturn("invalid response method");
         webJarFilter.init(filterConfig);
-        MatcherAssert.assertThat(webJarFilter.responseServeMethod, Matchers.is(WebJarFilter.ResponseServeMethod.WRITE_BYTE_RESPONSE));
+        assertThat(webJarFilter.responseServeMethod, is(WebJarFilter.ResponseServeMethod.WRITE_BYTE_RESPONSE));
     }
 
     @Test
     public void doFilter_writeByteResponse_withMultipleMatches() throws IOException, ServletException {
         String requestUri = "/webjars/popper.js/popper.min.js";
-        Mockito.when(httpServletRequest.getRequestURI()).thenReturn(requestUri);
+        when(httpServletRequest.getRequestURI()).thenReturn(requestUri);
         List<String> matches = Arrays.asList(
                 "META-INF/resources/webjars/popper.js/1.14.1/esm/popper.js",
                 "META-INF/resources/webjars/popper.js/1.14.1/umd/popper.js",
                 "META-INF/resources/webjars/popper.js/1.14.1/popper.js"
         );
         MultipleMatchesException multipleMatchesException = new MultipleMatchesException("a message..", matches);
-        Mockito.when(webJarAssetLocator.getFullPath("popper.js", "popper.min.js")).thenThrow(multipleMatchesException);
+        when(webJarAssetLocator.getFullPath("popper.js", "popper.min.js")).thenThrow(multipleMatchesException);
 
-        ServletOutputStreamImpl outputStream = Mockito.mock(ServletOutputStreamImpl.class);
-        Mockito.when(httpServletResponse.getOutputStream()).thenReturn(outputStream);
+        ServletOutputStreamImpl outputStream = mock(ServletOutputStreamImpl.class);
+        when(httpServletResponse.getOutputStream()).thenReturn(outputStream);
         webJarFilter.responseServeMethod = WebJarFilter.ResponseServeMethod.WRITE_BYTE_RESPONSE;
         webJarFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
-        Mockito.verify(outputStream, Mockito.times(9)).write(ArgumentMatchers.any(byte[].class), ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
-        Mockito.verifyZeroInteractions(filterChain);
+        verify(outputStream, times(9)).write(any(byte[].class), anyInt(), anyInt());
+        verifyZeroInteractions(filterChain);
     }
 
     @Test
     public void doFilter_redirect() throws IOException, ServletException {
-        Mockito.when(webJarAssetLocator.getFullPath("jquery", "jquery.min.js")).thenReturn("META-INF/resources/webjars/jquery/3.0.0/jquery.min.js");
+        when(webJarAssetLocator.getFullPath("jquery", "jquery.min.js")).thenReturn("META-INF/resources/webjars/jquery/3.0.0/jquery.min.js");
         webJarFilter.responseServeMethod = WebJarFilter.ResponseServeMethod.REDIRECT;
-        Mockito.when(httpServletRequest.getRequestURI()).thenReturn("/webjars/jquery/jquery.min.js");
+        when(httpServletRequest.getRequestURI()).thenReturn("/webjars/jquery/jquery.min.js");
         webJarFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
-        InOrder inOrder = Mockito.inOrder(httpServletResponse, filterChain);
-        inOrder.verify(httpServletResponse, Mockito.times(1)).sendRedirect("/webjars/jquery/3.0.0/jquery.min.js");
-        inOrder.verify(filterChain, Mockito.times(1)).doFilter(httpServletRequest, httpServletResponse);
+        InOrder inOrder = inOrder(httpServletResponse, filterChain);
+        inOrder.verify(httpServletResponse, times(1)).sendRedirect("/webjars/jquery/3.0.0/jquery.min.js");
+        inOrder.verify(filterChain, times(1)).doFilter(httpServletRequest, httpServletResponse);
         inOrder.verifyNoMoreInteractions();
     }
 
     @Test
     public void doFilter_noInfiniteRedirections() throws IOException, ServletException {
-        Mockito.when(webJarAssetLocator.getFullPath("jquery", "jquery.min.js")).thenReturn("META-INF/resources/webjars/jquery/3.0.0/jquery.min.js");
+        when(webJarAssetLocator.getFullPath("jquery", "jquery.min.js")).thenReturn("META-INF/resources/webjars/jquery/3.0.0/jquery.min.js");
         webJarFilter.responseServeMethod = WebJarFilter.ResponseServeMethod.REDIRECT;
-        Mockito.when(httpServletRequest.getRequestURI()).thenReturn("/webjars/jquery/3.0.0/jquery.min.js");
+        when(httpServletRequest.getRequestURI()).thenReturn("/webjars/jquery/3.0.0/jquery.min.js");
         webJarFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
-        Mockito.verifyZeroInteractions(httpServletResponse);
-        Mockito.verify(filterChain, Mockito.times(1)).doFilter(httpServletRequest, httpServletResponse);
+        verifyZeroInteractions(httpServletResponse);
+        verify(filterChain, times(1)).doFilter(httpServletRequest, httpServletResponse);
     }
 
     // Test if resolution also works, if the context root is not simply set to "/" but to "/foo/"
     @Test
     public void doFilter_nestedContextRoot() throws IOException, ServletException {
-        Mockito.when(webJarAssetLocator.getFullPath("jquery", "jquery.min.js")).thenReturn("META-INF/resources/webjars/jquery/3.0.0/jquery.min.js");
+        when(webJarAssetLocator.getFullPath("jquery", "jquery.min.js")).thenReturn("META-INF/resources/webjars/jquery/3.0.0/jquery.min.js");
         webJarFilter.responseServeMethod = WebJarFilter.ResponseServeMethod.REDIRECT;
-        Mockito.when(httpServletRequest.getRequestURI()).thenReturn("foo/webjars/jquery/jquery.min.js");
+        when(httpServletRequest.getRequestURI()).thenReturn("foo/webjars/jquery/jquery.min.js");
         webJarFilter.doFilter(httpServletRequest, httpServletResponse, filterChain);
-        InOrder inOrder = Mockito.inOrder(httpServletResponse, filterChain);
-        inOrder.verify(httpServletResponse, Mockito.times(1)).sendRedirect("foo/webjars/jquery/3.0.0/jquery.min.js");
-        inOrder.verify(filterChain, Mockito.times(1)).doFilter(httpServletRequest, httpServletResponse);
+        InOrder inOrder = inOrder(httpServletResponse, filterChain);
+        inOrder.verify(httpServletResponse, times(1)).sendRedirect("foo/webjars/jquery/3.0.0/jquery.min.js");
+        inOrder.verify(filterChain, times(1)).doFilter(httpServletRequest, httpServletResponse);
         inOrder.verifyNoMoreInteractions();
     }
 }
