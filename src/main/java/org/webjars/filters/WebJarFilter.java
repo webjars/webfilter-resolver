@@ -1,4 +1,4 @@
-package com.github.olada.webjars.filters;
+package org.webjars.filters;
 
 
 import org.slf4j.Logger;
