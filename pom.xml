@@ -9,7 +9,7 @@
     </parent>
 
     <groupId>org.webjars</groupId>
-    <artifactId>webfilter-resolver</artifactId>
+    <artifactId>webjars-webfilter-resolver</artifactId>
     <version>0.1.1-SNAPSHOT</version>
     <name>Webfilter-Resolver</name>
     <description>Webfilter which enables automatic version resolution for /webjars/-Requests</description>
@@ -31,11 +31,11 @@
     </developers>
 
     <scm>
-        <url>https://github.com/webjars/webfilter-resolver</url>
-        <connection>scm:git:git://github.com/webjars/webfilter-resolver.git</connection>
-        <developerConnection>scm:git:git@github.com:webjars/webfilter-resolver.git</developerConnection>
+        <url>https://github.com/webjars/webjars-webfilter-resolver</url>
+        <connection>scm:git:git://github.com/webjars/webjars-webfilter-resolver.git</connection>
+        <developerConnection>scm:git:git@github.com:webjars/webjars-webfilter-resolver.git</developerConnection>
         <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <dependencyManagement>
         <dependencies>
@@ -154,6 +154,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -163,11 +164,17 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
-                    <goals>deploy</goals>
+                    <serverId>sonatype-nexus-staging</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>
