@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/olada/webjars-webfilter-resolver.svg?branch=master)](https://travis-ci.org/olada/webjars-webfilter-resolver)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.olada/webjars-webfilter-resolver/badge.svg)](https://search.maven.org/#artifactdetails%7Ccom.github.olada%7Cwebjars-webfilter-resolver%7C0.1.0%7Cjar)
+[![Build Status](https://travis-ci.org/webjars/webfilter-resolver.svg?branch=master)](https://travis-ci.org/webjars/webfilter-resolver)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.webjars/webfilter-resolver/badge.svg)](https://search.maven.org/#artifactdetails%7Corg.webjars%7Cwebfilter-resolver%7C0.1.0%7Cjar)
 
 # webjars-webfilter-resolver
 Webfilter which enables automatic resolving of webjars without versions.
@@ -53,8 +53,8 @@ Following dependencies are required for the webfilter to work on a Wildfly
 server (tested with Wildfly 12 in Java EE 7 mode):
 ```
 <dependency>
-    <groupId>com.github.olada</groupId>
-    <artifactId>webjars-webfilter-resolver</artifactId>
+    <groupId>org.webjars</groupId>
+    <artifactId>webfilter-resolver</artifactId>
     <version>0.1.0</version>
 </dependency>
 <dependency>
