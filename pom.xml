@@ -32,8 +32,8 @@
 
     <scm>
         <url>https://github.com/webjars/webjars-webfilter-resolver</url>
-        <connection>scm:git:git://github.com/webjars/webjars-webfilter-resolver.git</connection>
-        <developerConnection>scm:git:git@github.com:webjars/webjars-webfilter-resolver.git</developerConnection>
+        <connection>scm:git:https://github.com/webjars/webjars-webfilter-resolver.git</connection>
+        <developerConnection>scm:git:https://github.com/webjars/webjars-webfilter-resolver.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
